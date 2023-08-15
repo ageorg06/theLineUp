@@ -34,3 +34,9 @@ def delete_barber(request, barber_id):
         return redirect('list_barbers')
     return render(request, 'barbers/delete.html', {'barber': barber})
 
+def calendar_view(request):
+    # Fetch all barber instances
+    barbers = Barber.objects.all()
+    if not barbers.exists():
+        print("No barbers found!") 
+    return render(request, 'landing_page.html', {'barbers': barbers})
