@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Barbers</h2>
+
+    <!-- Button to trigger "Add Barber" modal -->
+    <a href="{% url 'add_barber' %}" class="btn btn-primary mb-3">Add</a>
+    </button>
+
+    <!-- Table to display all barbers -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Working Hours</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for barber in barbers %}
+            <tr>
+                <td>{{ barber.name }}</td>
+                <td>{{ barber.working_hours_start }} - {{ barber.working_hours_end }}</td>
+                <td>
+                    <!-- Edit button -->
+                    <a href="{% url 'edit_barber' barber.id %}" class="btn btn-warning btn-sm">Edit</a>
+
+                    <!-- Delete button -->
+                    <a href="{% url 'delete_barber' barber.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- "Add Barber" Modal -->
+    <div class="modal fade" id="addBarberModal" tabindex="-1" aria-labelledby="addBarberModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBarberModalLabel">Add Barber</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add Barber Form Goes Here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Barber</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

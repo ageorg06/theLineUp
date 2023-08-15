@@ -1,0 +1,75 @@
+/* General Styles */
+body {
+    background-color: #445069; /* Greyish Blue */
+    color: #F7E987; /* Light Green */
+    font-family: 'Arial', sans-serif;
+}
+
+a {
+    color: #F7E987; /* Light Green */
+}
+
+a:hover {
+    color: #5B9A8B; /* Light Blue */
+    text-decoration: none;
+}
+
+/* Navbar */
+.navbar {
+    border-bottom: 3px solid #5B9A8B; /* Light Blue */
+}
+
+.navbar-brand {
+    color: #F7E987; /* Light Green */
+}
+
+.nav-link {
+    color: #F7E987; /* Light Green */
+}
+
+.nav-link:hover {
+    color: #5B9A8B; /* Light Blue */
+}
+
+/* Cards */
+.card {
+    background-color: #252B48; /* Dark Blue */
+    border-color: #5B9A8B; /* Light Blue */
+}
+
+.card-title {
+    color: #F7E987; /* Light Green */
+}
+
+.card-text {
+    color: #F7E987; /* Light Green */
+}
+
+/* Forms */
+.form-control {
+    background-color: #252B48; /* Dark Blue */
+    color: #F7E987; /* Light Green */
+    border-color: #5B9A8B; /* Light Blue */
+}
+
+.form-control:focus {
+    border-color: #F7E987; /* Light Green */
+    box-shadow: none;
+}
+
+.btn-primary {
+    background-color: #5B9A8B; /* Light Blue */
+    border-color: #5B9A8B; /* Light Blue */
+}
+
+.btn-primary:hover {
+    background-color: #F7E987; /* Light Green */
+    border-color: #F7E987; /* Light Green */
+}
+
+/* Alerts */
+.alert {
+    background-color: #252B48; /* Dark Blue */
+    color: #F7E987; /* Light Green */
+    border-color: #5B9A8B; /* Light Blue */
+}

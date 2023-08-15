@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Customers</h2>
+
+    <!-- Button to trigger "Add Customer" modal -->
+    <a href="{% url 'add_customer' %}" class="btn btn-primary mb-3">Add</a>
+
+    <!-- Table to display all customers -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Preferred Barber</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.phone_number }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.preferred_barber.name }}</td>
+                <td>
+                    <!-- Edit button -->
+                    <a href="{% url 'edit_customer' customer.id %}" class="btn btn-warning btn-sm">Edit</a>
+
+                    <!-- Delete button -->
+                    <a href="{% url 'delete_customer' customer.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Leave
 
-# Register your models here.
+# Registering the Leave model with the admin site
+admin.site.register(Leave)

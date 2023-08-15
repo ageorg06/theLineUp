@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Leaves</h1>
+<ul>
+    {% for leave in leaves %}
+    <li>{{ leave }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
