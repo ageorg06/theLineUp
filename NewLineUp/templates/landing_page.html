@@ -6,41 +6,107 @@
     <!-- Include necessary scripts and styles for FullCalendar -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" type="text/css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
 
     <script>
         // Parse the serialized barber data
         var barbers = JSON.parse('{{ barber_data_json|escapejs }}');
-
+        console.log("Parsed Barbers Data:", barbers); // Log the parsed data
+        
+        var screenWidth = $(window).width();
+        console.log("Screen Width:", screenWidth); // Log the screen width
+        
+        var calendarWidth = (screenWidth / barbers.length) - 20;
+        console.log("Calculated Calendar Width:", calendarWidth); // Log the calculated calendar width
+        
         $(document).ready(function() {
             // Loop through each barber and display a calendar
             barbers.forEach(function(barber) {
+                console.log("Processing Barber:", barber); // Log the current barber being processed
+                
                 // Barber Name
-                var barberName = barber.fields.name;  // Adjust based on your Barber model's fields
-                $("body").append("<h2>" + barberName + "</h2>");
-
+                var barberName = barber.fields.name;
+                console.log("Barber Name:", barberName); // Log the barber name
+                
+                var calendarContainer = $(".container.mt-5");
+                
                 // Calendar container for each barber
                 var calendarId = 'calendar-' + barber.pk;
-                $("body").append("<div id='" + calendarId + "'></div>");
-
-                // Initialize the calendar for each barber
-                $('#' + calendarId).fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay'
-                    },
-                    defaultView: 'agendaDay',
-                    slotDuration: '00:30:00',
-                    businessHours: {
-                        start: '09:00',
-                        end: '17:00',
-                        dow: [1, 2, 3, 4, 5]
-                    }
+                console.log("Generated Calendar ID:", calendarId); // Log the generated calendar ID
+                
+                var calendarDiv = $("<div id='" + calendarId + "' class='barber-calendar'></div>");
+                calendarContainer.append(calendarDiv);
+        
+                // Fetch appointments for the barber
+                $.get('/get_appointments/' + barber.pk + '/' + moment().format('YYYY-MM-DD'), function(events) {
+                    console.log("Fetched Appointments for Barber ID " + barber.pk + ":", events); // Log the fetched events
+                    // Initialize the calendar for each barber with the fetched events
+                    var calendar = new FullCalendar.Calendar(calendarDiv[0], {
+                        headerToolbar: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                        },
+                        initialView: 'timeGridDay',
+                        slotDuration: '00:30:00',
+                        businessHours: {
+                            startTime: '08:00',
+                            endTime: '20:00',
+                            daysOfWeek: [1, 2, 3, 5, 6]
+                        },
+                        slotMinTime: '08:00',  
+                        slotMaxTime: '20:00',
+                        events: events, // Add the fetched events to the calendar
+                        editable: true, // Allow events to be dragged and resized
+                        timeZone: 'Europe/Nicosia',
+                        eventClick: function(info) {
+                            var appointmentId = info.event.extendedProps.appointment_id;  // Get the appointment ID from the event's extended properties
+                            window.location.href = '/appointments/edit/' + appointmentId;  // Redirect to the edit page for the appointment
+                        },
+                        dateClick: function(info) {
+                            if (!info.allDay) {  // Check if the clicked slot is not an all-day slot
+                                window.location.href = '/appointments/add/';  // Redirect to the add new appointment page
+                            }
+                        },
+                        eventDrop: function(info) {
+                            var appointmentId = info.event.extendedProps.appointment_id;  // Get the appointment ID from the event's extended properties
+                            var newStartTime = info.event.start.toISOString();  // Convert the new start time to ISO string format
+                            var newEndTime = info.event.end.toISOString();  // Convert the new end time to ISO string format
+                        
+                            // Make an AJAX call to update the appointment's time in the database
+                            $.ajax({
+                                url: '/update_appointment_time/',
+                                type: 'POST',
+                                data: {
+                                    'appointment_id': appointmentId,
+                                    'new_start_time': newStartTime,
+                                    'new_end_time': newEndTime
+                                },
+                                headers: {
+                                    'X-CSRFToken': $('meta[name="csrf-token"]').attr('content')  // Include the CSRF token in the request header
+                                },
+                                success: function(response) {
+                                    if (response.status !== 'success') {
+                                        alert('Failed to update appointment time. Please try again.');
+                                        info.revert();  // Revert the event to its original position
+                                    }
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    console.error("AJAX Error:", textStatus, errorThrown);
+                                    alert('Error occurred while updating appointment time. Check the console for more details.');
+                                    info.revert();  // Revert the event to its original position
+                                }
+                            });
+                        },                        
+                    });
+                    calendar.render();
                 });
             });
         });
+        
     </script>
 </div>
 {% endblock %}

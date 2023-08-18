@@ -1,75 +1,26 @@
-/* General Styles */
-body {
-    background-color: #445069; /* Greyish Blue */
-    color: #F7E987; /* Light Green */
-    font-family: 'Arial', sans-serif;
+
+
+/* Barber Calendar Styles */
+.barber-calendar {
+    flex: 1;
+    width: 320px;
+    height: 600px;
+    box-sizing:content-box;
+    overflow-x: auto;
 }
 
-a {
-    color: #F7E987; /* Light Green */
+.container.mt-5 {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow the items to wrap onto multiple lines */
+    justify-content: space-between; /* Distribute items evenly with equal space around them */
+    overflow-x: auto;
 }
 
-a:hover {
-    color: #5B9A8B; /* Light Blue */
-    text-decoration: none;
+
+.barber-calendar:not(:last-child) {
+    margin-right: 25px; /* Add margin to the right for all but the last calendar */
 }
 
-/* Navbar */
-.navbar {
-    border-bottom: 3px solid #5B9A8B; /* Light Blue */
-}
-
-.navbar-brand {
-    color: #F7E987; /* Light Green */
-}
-
-.nav-link {
-    color: #F7E987; /* Light Green */
-}
-
-.nav-link:hover {
-    color: #5B9A8B; /* Light Blue */
-}
-
-/* Cards */
-.card {
-    background-color: #252B48; /* Dark Blue */
-    border-color: #5B9A8B; /* Light Blue */
-}
-
-.card-title {
-    color: #F7E987; /* Light Green */
-}
-
-.card-text {
-    color: #F7E987; /* Light Green */
-}
-
-/* Forms */
-.form-control {
-    background-color: #252B48; /* Dark Blue */
-    color: #F7E987; /* Light Green */
-    border-color: #5B9A8B; /* Light Blue */
-}
-
-.form-control:focus {
-    border-color: #F7E987; /* Light Green */
-    box-shadow: none;
-}
-
-.btn-primary {
-    background-color: #5B9A8B; /* Light Blue */
-    border-color: #5B9A8B; /* Light Blue */
-}
-
-.btn-primary:hover {
-    background-color: #F7E987; /* Light Green */
-    border-color: #F7E987; /* Light Green */
-}
-
-/* Alerts */
-.alert {
-    background-color: #252B48; /* Dark Blue */
-    color: #F7E987; /* Light Green */
-    border-color: #5B9A8B; /* Light Blue */
+.barber-calendar:last-child {
+    margin-right: 0; /* Remove margin from the right for the last calendar */
 }

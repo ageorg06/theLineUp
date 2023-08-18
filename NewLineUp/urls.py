@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from NewLineUp.views import landing_page
-from . import views
+from NewLineUp import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('leaves/', include('leaves.urls')),
     path('', landing_page, name='landing_page'),
     path('get_appointments/<int:barber_id>/<str:date>/', views.get_appointments, name='get_appointments'),
+    path('update_appointment_time/', views.update_appointment_time, name='update_appointment_time'),
 ]
